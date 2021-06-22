@@ -1,0 +1,31 @@
+ version: "3"
+
+ services: 
+
+     front:
+       build: ./front
+       ports:
+        - 8888:80
+       volumes:
+         - ./log:/var/log/nginx         
+       depends_on: 
+        - back
+       networks:
+        - intnet
+
+     back:
+       build: ./back
+#       volumes:
+#         - ./back/ngnix.conf:/etc/nginx/nginx.conf
+       command: bash  -c "/etc/init.d/php7.3-fpm start && nginx -g \"daemon off;\" "
+       ports:
+          - 80:80
+       networks:
+        - intnet
+
+ networks:
+    intnet:
+
+ volumes:
+     log:
+
